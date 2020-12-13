@@ -2,11 +2,11 @@ const pgp = require('pg-promise')(/* initialization options */)
 
 // Onderstaande data later ergens opslaan -> Veiligheid
 const cn = {
-    host: '81.207.59.245',
+    host: '192.168.0.108',
     port: 5432,
-    database: 'hsleidendb',
-    user: 'hsleiden',
-    password: 'hsleiden'
+    database: 'iprwc',
+    user: 'iprwc',
+    password: 'Adidasmerken1'
 };
 
 const db = pgp(cn); // database instance;
