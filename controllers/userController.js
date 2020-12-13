@@ -1,0 +1,237 @@
+// Used libraries
+const db = require('../db');
+const _ = require('lodash');
+const { v4:uuidv4 } = require('uuid');
+
+// Database table name
+const TABLE = 'users';
+
+/**
+ * Select all users
+ * 
+ * @param {req} req - necessary in order for result
+ * @param {res} res - You always send a result back to the user
+ * @param {next} next - Use in documentation, never used
+ * 
+ * @return {result} res - Always return an object with a message and status code
+ */
+exports.getAllUsers = (req, res, next) => {
+
+    db.query('SELECT ${columns:name} FROM ${table:name}', {
+        columns: ['user_id', 'user_email', 'group_id'],
+        table: TABLE
+    })
+    .then(result => {
+        res.status(200).json({
+            result: result
+        });
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+};
+
+/**
+ * Select a user by ID
+ * 
+ * @param {req} req - necessary in order to select user by ID
+ * @param {res} res - You always send a result back to the user
+ * @param {next} next - Use in documentation, never used
+ * 
+ * @return {result} res - Always return an object with a message and status code
+ */
+exports.getUser = (req, res, next) => {
+    
+    const { email } = req.params;
+    
+    db.query('SELECT ${columns:name} FROM ${table:name} WHERE user_email = ${email}', {
+        columns: ['user_id', 'user_email', 'group_id'],
+        table: TABLE,
+        email: email
+    })
+    .then(result => {
+        if(!_.isEmpty(result)) {
+            res.status(200).json({
+                result: result
+            });
+        } else {
+            res.status(404).json({
+                message: `Collection with ${id} is not found`
+            });
+        }
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+};
+
+/**
+ * Create a new user
+ * 
+ * @param {req} req - necessary in order to fill in all user information
+ * @param {res} res - You always send a result back to the user
+ * @param {next} next - Use in documentation, never used
+ * 
+ * @return {result} res - Always return an object with a message and status code
+ */
+exports.createUser = (req, res, next) => {
+
+    const { userid, useremail, userpassword, groupid } = req.body;
+
+    db.query('SELECT ${columns:name} FROM ${table:name} WHERE user_email = ${useremail}', {
+        columns: ['user_id', 'user_email'],
+        table: TABLE,
+        useremail: useremail
+    })
+    .then(result => {
+        // Email is already in use
+        if(_.isEmpty(result)) {
+            // No email found - is empty
+            db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${useremail}, ${userpassword}, ${groupid})', {
+                table: TABLE,
+                columns: ['user_id', 'user_email', 'user_password', 'group_id'],
+                userid: id,
+                useremail: useremail,
+                userpassword: userpassword,
+                groupid: groupid
+            })
+            .then(result => {
+                res.status(200).json({
+                    result: result
+                });
+            })
+            .catch(error => {
+                res.status(404).json({
+                    error: error.message || error
+                });
+            });
+        } else {
+            // email is found - denied action
+            res.status(400).json({
+                code: 400,
+                error: "email is already in use"
+            });
+        }
+    })
+    .catch(error => {
+        // Email have not been found
+        db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${useremail}, ${userpassword}, ${groupid})', {
+            table: TABLE,
+            columns: ['user_id', 'user_email', 'user_password', 'group_id'],
+            userid: id,
+            useremail: useremail,
+            userpassword: userpassword,
+            groupid: groupid
+        })
+        .then(result => {
+            res.status(200).json({
+                result: result
+            });
+        })
+        .catch(error => {
+            res.status(404).json({
+                error: error.message || error
+            });
+        });
+    });
+};
+
+/**
+ * Delete user 
+ * 
+ * @param {req} req - necessary in order to delete user by ID
+ * @param {res} res - You always send a result back to the user
+ * @param {next} next - Use in documentation, never used
+ * 
+ * @return {result} res - Always return an object with a message and status code
+ */
+exports.deleteUser = (req, res, next) => {
+
+    const { userid } = req.body;
+    
+    db.query('DELETE FROM ${table:name} WHERE user_id = ${userid}', {
+        table: TABLE,
+        userid: userid
+    })
+    .then(result => {
+        if(_.isEmpty(result)) {
+            res.status(200).json({
+                userid: userid,
+                result: 'user is have been deleted'
+            });
+        }
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+};
+
+/**
+ * Check if the user login is correct
+ * 
+ * @param {req} req - necessary in order to select user by email, password
+ * @param {res} res - You always send a result back to the user
+ * @param {next} next - Use in documentation, never used
+ * 
+ * @return {result} res - Always return an object with a message and status code
+ */
+exports.checkUserLogin = (req, res, next) => {
+    const {useremail, userpassword} = req.params;
+
+    db.query("SELECT * FROM ${table:name} WHERE user_email=${useremail} AND user_password=${userpassword} AND group_id IN ('1','2');", {
+        table: TABLE,
+        useremail: useremail,
+        userpassword: userpassword
+    })
+    .then(result => {
+        if (!_.isEmpty(result)) {
+            res.status(200).json({
+                'login': true,
+            });
+        } else {
+            res.status(200).json({
+                'login': false,
+                result: result
+            });
+        }
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+};
+
+/**
+ * change password by selecting the user on email
+ * 
+ * @param {req} req - necessary in order to select user by ID
+ * @param {res} res - You always send a result back to the user
+ * @param {next} next - Use in documentation, never used
+ * 
+ * @return {result} res - Always return an object with a message and status code
+ */
+exports.changePassword = (req, res, next) => {
+
+    const { userEmail, userPassword } = req.body;
+    
+    db.query('UPDATE ${table:name} SET user_password = ${userPassword} WHERE user_email = ${userEmail}', {
+        table: TABLE,
+        userEmail: userEmail,
+        userPassword: userPassword
+    }).then(result => {
+        res.status(200).json({
+            result: result
+        });
+    }).catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+};
