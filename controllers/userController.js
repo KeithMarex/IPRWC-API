@@ -2,6 +2,7 @@
 const db = require('../db');
 const _ = require('lodash');
 const { v4:uuidv4 } = require('uuid');
+const cartController = require("./cartController.js");
 
 // Database table name
 const TABLE = 'user';
@@ -93,6 +94,8 @@ exports.createUser = (req, res, next) => {
         // Email is already in use
         if(_.isEmpty(result)) {
             // No email found - is empty
+            cartController.createCart(winkelwagenid);
+
             db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${firstname}, ${lastname}, ${useremail}, ${userpassword}, ${streetname}, ${housenumber}, ${placename}, ${cartid})', {
                 table: TABLE,
                 columns: ['user_id', 'voornaam', 'achternaam', 'email', 'wachtwoord', 'straatnaam', 'huisnummer', 'plaatsnaam', 'cart_id'],

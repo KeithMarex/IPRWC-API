@@ -5,6 +5,9 @@ const cartController = require('../controllers/cartController');
 // GET /cart/getAll/:userId
 router.get('/getAll/:userId', cartController.getAllProducts);
 
+// POST /cart/create/:id
+router.get('/create/:id', cartController.clearCart)
+
 // POST /cart/add/:userId/:productId
 router.post('/add/:userId/:productId', cartController.addProduct);
 
