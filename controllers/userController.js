@@ -148,8 +148,9 @@ exports.createUser = (req, res, next) => {
         const user_id = uuidv4();
         const winkelwagenid = uuidv4();
 
-        db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${cartid})', {
+        db.query('INSERT INTO ${table:name} (${colums:name}) VALUES (${cartid})', {
             table: 'cart',
+            columns: ['cart_id'],
             cartid: winkelwagenid
         })
         .then(result => {
