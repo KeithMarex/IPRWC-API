@@ -172,6 +172,8 @@ exports.checkUserLogin = (req, res, next) => {
         } else {
             res.status(200).json({
                 'login': false,
+                'useremail': email,
+                'userpassword': wachtwoord,
                 result: result
             });
         }
