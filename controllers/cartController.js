@@ -6,7 +6,9 @@ const { v4:uuidv4 } = require('uuid');
 // Database table name
 const TABLE = 'cart';
 
-exports.createCart = (cartid, res, next) => {
+exports.createCart = (req, res, next) => {
+    const { cartid } = req.body;
+
     db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${cartid})', {
         table: TABLE,
         cartid: cartid

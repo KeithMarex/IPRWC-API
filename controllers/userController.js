@@ -94,8 +94,24 @@ exports.createUser = (req, res, next) => {
         // Email is already in use
         if(_.isEmpty(result)) {
             // No email found - is empty
-            cartController.createCart(winkelwagenid);
-
+            db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${cartid})', {
+                table: 'cart',
+                cartid: winkelwagenid
+            })
+            .then(result => {
+                if(_.isEmpty(result)) {
+                    res.status(200).json({
+                        userid: userid,
+                        result: 'Cart has been created'
+                    });
+                }
+            })
+            .catch(error => {
+                res.status(404).json({
+                    error: error.message || error
+                });
+            });
+            
             db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${firstname}, ${lastname}, ${useremail}, ${userpassword}, ${streetname}, ${housenumber}, ${placename}, ${cartid})', {
                 table: TABLE,
                 columns: ['user_id', 'voornaam', 'achternaam', 'email', 'wachtwoord', 'straatnaam', 'huisnummer', 'plaatsnaam', 'cart_id'],
@@ -132,7 +148,23 @@ exports.createUser = (req, res, next) => {
         const user_id = uuidv4();
         const winkelwagenid = uuidv4();
 
-        cartController.createCart(winkelwagenid);
+        db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${cartid})', {
+            table: 'cart',
+            cartid: winkelwagenid
+        })
+        .then(result => {
+            if(_.isEmpty(result)) {
+                res.status(200).json({
+                    userid: userid,
+                    result: 'Cart has been created'
+                });
+            }
+        })
+        .catch(error => {
+            res.status(404).json({
+                error: error.message || error
+            });
+        });
 
         db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${firstname}, ${lastname}, ${useremail}, ${userpassword}, ${streetname}, ${housenumber}, ${placename}, ${cartid})', {
             table: TABLE,
