@@ -18,7 +18,7 @@ const TABLE = 'user';
 exports.getAllUsers = (req, res, next) => {
 
     db.query('SELECT ${columns:name} FROM ${table:name}', {
-        columns: ['user_id', 'user_email', 'group_id'],
+        columns: ['user_id', 'voornaam', 'achternaam', 'email'],
         table: TABLE
     })
     .then(result => {
