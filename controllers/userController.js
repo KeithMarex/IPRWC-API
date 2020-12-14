@@ -34,51 +34,6 @@ exports.getAllUsers = (req, res, next) => {
     });
 };
 
-/**
- * Select a user by ID
- * 
- * @param {req} req - necessary in order to select user by ID
- * @param {res} res - You always send a result back to the user
- * @param {next} next - Use in documentation, never used
- * 
- * @return {result} res - Always return an object with a message and status code
- */
-exports.getUser = (req, res, next) => {
-    
-    const { email } = req.params;
-    
-    db.query('SELECT ${columns:name} FROM ${table:name} WHERE user_email = ${email}', {
-        columns: ['user_id', 'user_email', 'group_id'],
-        table: TABLE,
-        email: email
-    })
-    .then(result => {
-        if(!_.isEmpty(result)) {
-            res.status(200).json({
-                result: result
-            });
-        } else {
-            res.status(404).json({
-                message: `Collection with ${id} is not found`
-            });
-        }
-    })
-    .catch(error => {
-        res.status(404).json({
-            error: error.message || error
-        });
-    });
-};
-
-/**
- * Create a new user
- * 
- * @param {req} req - necessary in order to fill in all user information
- * @param {res} res - You always send a result back to the user
- * @param {next} next - Use in documentation, never used
- * 
- * @return {result} res - Always return an object with a message and status code
- */
 exports.createUser = (req, res, next) => {
 
     const { voornaam, achternaam, email, wachtwoord, straatnaam, huisnummer, plaatsnaam } = req.body;
@@ -193,38 +148,6 @@ exports.createUser = (req, res, next) => {
 };
 
 /**
- * Delete user 
- * 
- * @param {req} req - necessary in order to delete user by ID
- * @param {res} res - You always send a result back to the user
- * @param {next} next - Use in documentation, never used
- * 
- * @return {result} res - Always return an object with a message and status code
- */
-exports.deleteUser = (req, res, next) => {
-
-    const { userid } = req.body;
-    
-    db.query('DELETE FROM ${table:name} WHERE user_id = ${userid}', {
-        table: TABLE,
-        userid: userid
-    })
-    .then(result => {
-        if(_.isEmpty(result)) {
-            res.status(200).json({
-                userid: userid,
-                result: 'user is have been deleted'
-            });
-        }
-    })
-    .catch(error => {
-        res.status(404).json({
-            error: error.message || error
-        });
-    });
-};
-
-/**
  * Check if the user login is correct
  * 
  * @param {req} req - necessary in order to select user by email, password
@@ -236,7 +159,7 @@ exports.deleteUser = (req, res, next) => {
 exports.checkUserLogin = (req, res, next) => {
     const {useremail, userpassword} = req.params;
 
-    db.query("SELECT * FROM ${table:name} WHERE user_email=${useremail} AND user_password=${userpassword} AND group_id IN ('1','2');", {
+    db.query("SELECT * FROM ${table:name} WHERE email=${useremail} AND wachtwoord=${userpassword}", {
         table: TABLE,
         useremail: useremail,
         userpassword: userpassword
