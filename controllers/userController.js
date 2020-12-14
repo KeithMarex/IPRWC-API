@@ -4,7 +4,7 @@ const _ = require('lodash');
 const { v4:uuidv4 } = require('uuid');
 
 // Database table name
-const TABLE = 'users';
+const TABLE = 'user';
 
 /**
  * Select all users
