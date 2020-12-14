@@ -157,12 +157,12 @@ exports.createUser = (req, res, next) => {
  * @return {result} res - Always return an object with a message and status code
  */
 exports.checkUserLogin = (req, res, next) => {
-    const {useremail, userpassword} = req.params;
+    const {email, wachtwoord} = req.params;
 
     db.query("SELECT * FROM ${table:name} WHERE email=${useremail} AND wachtwoord=${userpassword}", {
         table: TABLE,
-        useremail: useremail,
-        userpassword: userpassword
+        useremail: email,
+        userpassword: wachtwoord
     })
     .then(result => {
         if (!_.isEmpty(result)) {
