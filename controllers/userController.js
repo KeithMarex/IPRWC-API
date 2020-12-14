@@ -95,7 +95,7 @@ exports.createUser = (req, res, next) => {
             // No email found - is empty
             db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${firstname}, ${lastname}, ${useremail}, ${userpassword}, ${streetname}, ${housenumber}, ${placename}, ${cartid})', {
                 table: TABLE,
-                columns: ['user_id', 'voornaam', 'achternaam', 'email', 'wachtwoord', 'straatnaam', 'huisnummer', 'plaatsnaam'],
+                columns: ['user_id', 'voornaam', 'achternaam', 'email', 'wachtwoord', 'straatnaam', 'huisnummer', 'plaatsnaam', 'cart_id'],
                 userid: user_id,
                 firstname: voornaam,
                 lastname: achternaam,
@@ -131,7 +131,7 @@ exports.createUser = (req, res, next) => {
 
         db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${firstname}, ${lastname}, ${useremail}, ${userpassword}, ${streetname}, ${housenumber}, ${placename}, ${cartid})', {
             table: TABLE,
-            columns: ['user_id', 'voornaam', 'achternaam', 'email', 'wachtwoord', 'straatnaam', 'huisnummer', 'plaatsnaam'],
+            columns: ['user_id', 'voornaam', 'achternaam', 'email', 'wachtwoord', 'straatnaam', 'huisnummer', 'plaatsnaam', 'cart_id'],
             userid: user_id,
             firstname: voornaam,
             lastname: achternaam,
