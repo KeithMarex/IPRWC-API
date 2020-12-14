@@ -85,7 +85,7 @@ exports.createUser = (req, res, next) => {
     const winkelwagenid = uuidv4();
 
     db.query('SELECT ${columns:name} FROM ${table:name} WHERE email = ${useremail}', {
-        columns: ['user_id', 'user_email'],
+        columns: ['user_id', 'email'],
         table: TABLE,
         useremail: email
     })
