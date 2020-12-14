@@ -25,4 +25,3 @@ exports.createCart = (cartid) => {
         });
     });
 };
-}
