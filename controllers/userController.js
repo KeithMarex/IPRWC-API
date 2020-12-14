@@ -126,10 +126,13 @@ exports.createUser = (req, res, next) => {
     })
     .catch(error => {
         // Email have not been found
+        const user_id = uuidv4();
+        const winkelwagenid = uuidv4();
+
         db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${firstname}, ${lastname}, ${useremail}, ${userpassword}, ${streetname}, ${housenumber}, ${placename}, ${cartid})', {
             table: TABLE,
             columns: ['user_id', 'voornaam', 'achternaam', 'email', 'wachtwoord', 'straatnaam', 'huisnummer', 'plaatsnaam'],
-            userid: id,
+            userid: user_id,
             firstname: voornaam,
             lastname: achternaam,
             useremail: email,
