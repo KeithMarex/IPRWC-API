@@ -102,7 +102,6 @@ exports.createUser = (req, res, next) => {
             .then(result => {
                 if(_.isEmpty(result)) {
                     res.status(200).json({
-                        userid: userid,
                         result: 'Cart has been created'
                     });
                 }
@@ -157,7 +156,6 @@ exports.createUser = (req, res, next) => {
         .then(result => {
             if(_.isEmpty(result)) {
                 res.status(200).json({
-                    userid: userid,
                     result: 'Cart has been created'
                 });
             }
