@@ -9,7 +9,7 @@ router.get('/all', userController.getAllUsers);
 router.post('/create', userController.createUser);
 
 // POST /user/checkUserLogin
-router.get('/checkUserLogin/:useremail/:userpassword', userController.checkUserLogin);
+router.get('/checkUserLogin', userController.checkUserLogin);
 
 // POST /user/password/change
 // router.post('/password/change', userController.changePassword);
