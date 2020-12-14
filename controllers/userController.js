@@ -80,24 +80,31 @@ exports.getUser = (req, res, next) => {
  */
 exports.createUser = (req, res, next) => {
 
-    const { userid, useremail, userpassword, groupid } = req.body;
+    const { voornaam, achternaam, email, wachtwoord, straatnaam, huisnummer, plaatsnaam } = req.body;
+    const user_id = uuidv4();
+    const winkelwagenid = uuidv4();
 
-    db.query('SELECT ${columns:name} FROM ${table:name} WHERE user_email = ${useremail}', {
+    db.query('SELECT ${columns:name} FROM ${table:name} WHERE email = ${useremail}', {
         columns: ['user_id', 'user_email'],
         table: TABLE,
-        useremail: useremail
+        useremail: email
     })
     .then(result => {
         // Email is already in use
         if(_.isEmpty(result)) {
             // No email found - is empty
-            db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${useremail}, ${userpassword}, ${groupid})', {
+            db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${firstname}, ${lastname}, ${useremail}, ${userpassword}, ${streetname}, ${housenumber}, ${placename}, ${cartid})', {
                 table: TABLE,
-                columns: ['user_id', 'user_email', 'user_password', 'group_id'],
-                userid: id,
-                useremail: useremail,
-                userpassword: userpassword,
-                groupid: groupid
+                columns: ['user_id', 'voornaam', 'achternaam', 'email', 'wachtwoord', 'straatnaam', 'huisnummer', 'plaatsnaam'],
+                userid: user_id,
+                firstname: voornaam,
+                lastname: achternaam,
+                useremail: email,
+                userpassword: wachtwoord,
+                streetname: straatnaam,
+                housenumber: huisnummer,
+                placename: plaatsnaam,
+                cartid: winkelwagenid
             })
             .then(result => {
                 res.status(200).json({
@@ -119,13 +126,18 @@ exports.createUser = (req, res, next) => {
     })
     .catch(error => {
         // Email have not been found
-        db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${useremail}, ${userpassword}, ${groupid})', {
+        db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${firstname}, ${lastname}, ${useremail}, ${userpassword}, ${streetname}, ${housenumber}, ${placename}, ${cartid})', {
             table: TABLE,
-            columns: ['user_id', 'user_email', 'user_password', 'group_id'],
+            columns: ['user_id', 'voornaam', 'achternaam', 'email', 'wachtwoord', 'straatnaam', 'huisnummer', 'plaatsnaam'],
             userid: id,
-            useremail: useremail,
-            userpassword: userpassword,
-            groupid: groupid
+            firstname: voornaam,
+            lastname: achternaam,
+            useremail: email,
+            userpassword: wachtwoord,
+            streetname: straatnaam,
+            housenumber: huisnummer,
+            placename: plaatsnaam,
+            cartid: winkelwagenid
         })
         .then(result => {
             res.status(200).json({
