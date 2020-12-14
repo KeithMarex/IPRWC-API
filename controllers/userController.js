@@ -157,7 +157,7 @@ exports.createUser = (req, res, next) => {
  * @return {result} res - Always return an object with a message and status code
  */
 exports.checkUserLogin = (req, res, next) => {
-    const {email, wachtwoord} = req.params;
+    const {email, wachtwoord} = req.body;
 
     db.query("SELECT * FROM ${table:name} WHERE email=${useremail} AND wachtwoord=${userpassword}", {
         table: TABLE,
@@ -172,8 +172,6 @@ exports.checkUserLogin = (req, res, next) => {
         } else {
             res.status(200).json({
                 'login': false,
-                'useremail': email,
-                'userpassword': wachtwoord,
                 result: result
             });
         }
