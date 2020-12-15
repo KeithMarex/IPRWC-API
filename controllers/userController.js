@@ -54,19 +54,6 @@ exports.createUser = (req, res, next) => {
                 columns: ['cart_id'],
                 cartid: winkelwagenid
             })
-            .then(result => {
-                if(_.isEmpty(result)) {
-                    res.status(200).json({
-                        'create': true,
-                        result: result
-                    });
-                }
-            })
-            .catch(error => {
-                res.status(404).json({
-                    error: error.message || error
-                });
-            });
             
             db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${userid}, ${firstname}, ${lastname}, ${useremail}, ${userpassword}, ${streetname}, ${housenumber}, ${placename}, ${cartid})', {
                 table: TABLE,
@@ -83,6 +70,7 @@ exports.createUser = (req, res, next) => {
             })
             .then(result => {
                 res.status(200).json({
+                    'create': true,
                     result: result
                 });
             })
@@ -170,6 +158,7 @@ exports.checkUserLogin = (req, res, next) => {
         if (!_.isEmpty(result)) {
             res.status(200).json({
                 'login': true,
+                result: result
             });
         } else {
             res.status(200).json({
@@ -196,14 +185,15 @@ exports.checkUserLogin = (req, res, next) => {
  */
 exports.changePassword = (req, res, next) => {
 
-    const { userEmail, userPassword } = req.body;
+    const { email } = req.body;
     
-    db.query('UPDATE ${table:name} SET user_password = ${userPassword} WHERE user_email = ${userEmail}', {
+    db.query('UPDATE ${table:name} SET wachtwoord = ${userPassword} WHERE email = ${userEmail}', {
         table: TABLE,
-        userEmail: userEmail,
-        userPassword: userPassword
+        userEmail: email,
+        userPassword: Math.random().toString(36).substr(2, 8)
     }).then(result => {
         res.status(200).json({
+            reset: true,
             result: result
         });
     }).catch(error => {

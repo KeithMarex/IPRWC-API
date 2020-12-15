@@ -7,8 +7,8 @@ const port = 3000;
 
 // Include all Path/ Route names
 const userRoutes = require('./routes/userRoutes');
-// const productRoutes = require('./routes/productRoutes');
-// const cartRoutes = require('./routes/cartRoutes');
+const productRoutes = require('./routes/productRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 
 /**
  * Use body parser for all handlers
@@ -25,8 +25,8 @@ app.use(
  * Create all base paths for the api
  */
 app.use('/user', userRoutes);
-// app.use('/product', productRoutes);
-// app.use('/cart', cartRoutes);
+app.use('/product', productRoutes);
+app.use('/cart', cartRoutes);
 
 /**
  * Log all base information for the api

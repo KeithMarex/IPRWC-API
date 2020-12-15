@@ -12,6 +12,6 @@ router.post('/create', userController.createUser);
 router.post('/checkUserLogin', userController.checkUserLogin);
 
 // POST /user/password/change
-// router.post('/password/change', userController.changePassword);
+router.post('/passChange', userController.changePassword);
 
 module.exports = router;
