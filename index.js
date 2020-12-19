@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
+const nodemailer = require("nodemailer");
 const port = 3000;
 
 // Include all Path/ Route names

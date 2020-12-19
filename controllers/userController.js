@@ -3,6 +3,7 @@ const db = require('../db');
 const _ = require('lodash');
 const { v4:uuidv4 } = require('uuid');
 const cartController = require("./cartController.js");
+const mailSender = require('../controllers/mailController');
 
 // Database table name
 const TABLE = 'user';
@@ -17,7 +18,6 @@ const TABLE = 'user';
  * @return {result} res - Always return an object with a message and status code
  */
 exports.getAllUsers = (req, res, next) => {
-
     db.query('SELECT ${columns:name} FROM ${table:name}', {
         columns: ['user_id', 'voornaam', 'achternaam', 'email'],
         table: TABLE
@@ -191,6 +191,40 @@ exports.changePassword = (req, res, next) => {
         table: TABLE,
         userEmail: email,
         userPassword: Math.random().toString(36).substr(2, 8)
+    }).then(result => {
+        res.status(200).json({
+            reset: true,
+            result: result
+        });
+    }).catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+};
+
+exports.resetPassword = (req, res) => {
+    const {email} = req.body;
+
+    if (typeof email === 'undefined') {
+        return res.status(200).json({error: true});
+    }
+
+    let password = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    for (let i = 0; i < 15; i++) {
+        password += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
+    // TODO send password via email to user
+    mailSender.sendResetMail(email, password);
+
+    // const password_hash = await hashPassword(password);
+
+    db.query('UPDATE ${table:name} SET wachtwoord = ${userPassword} WHERE email = ${userEmail}', {
+        table: TABLE,
+        userEmail: email,
+        userPassword: password
     }).then(result => {
         res.status(200).json({
             reset: true,
