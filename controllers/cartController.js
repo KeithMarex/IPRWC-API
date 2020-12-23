@@ -48,3 +48,24 @@ exports.getProducts = (req, res) => {
         });
     });
 }
+
+exports.addProductToCart = (req, res) => {
+    const { cartid, productid } = req.body;
+
+    db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${cartid}, ${productid})', {
+        table: KOPPELTABEL,
+        columns: ['cart_id', 'product_id'],
+        cartid: cartid,
+        productid: productid
+    })
+    .then(result => {
+        res.status(200).json({
+            result: result
+        })
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+}
