@@ -16,7 +16,7 @@ db.connect()
     .then(obj => {
         // Can check the server version here (pg-promise v10.1.0+):
         const serverVersion = obj.client.serverVersion;
-        console.log('Database verbinding opgesteld!');
+        console.log('[Database Controller] Connection has been succesfully set up.');
         obj.done(); // success, release the connection;
     })
     .catch(error => {

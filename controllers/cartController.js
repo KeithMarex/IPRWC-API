@@ -2,9 +2,11 @@
 const db = require('../db');
 const _ = require('lodash');
 const { v4:uuidv4 } = require('uuid');
+const { result } = require('../db');
 
 // Database table name
 const TABLE = 'cart';
+const KOPPELTABEL = 'cart_product'
 
 exports.createCart = (req, res, next) => {
     const { cartid } = req.body;
@@ -27,3 +29,22 @@ exports.createCart = (req, res, next) => {
         });
     });
 };
+
+exports.getProducts = (req, res) => {
+    const { cartid } = req.body;
+
+    db.query('SELECT product_id FROM ${table:name} WHERE cart_id=${cartid}', {
+        table: KOPPELTABEL,
+        cartid: cartid
+    })
+    .then(result => {
+        res.status(200).json({
+            result: result
+        })
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+}

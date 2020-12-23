@@ -44,6 +44,6 @@ app.use((error, req, res, next) => {
  * Write the port number in the console window
  */
 app.listen(port, () => {
-    console.log(`App running on port ${port}`);
+    console.log(`[API Controller] App running on port ${port}.`);
 });
 

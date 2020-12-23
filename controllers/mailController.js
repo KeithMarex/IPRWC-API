@@ -13,7 +13,7 @@ transporter.verify(function (error, succes){
     if (error) {
         console.log(error);
     } else {
-        console.log('Server is read to take our messages.');
+        console.log('[Mail Conrtoller] Server is read to take our messages.');
     }
 });
 
@@ -73,7 +73,7 @@ exports.sendResetMail = (email, password) => {
 <table align="center" cellpadding="0" cellspacing="0" class="page-center" style="text-align: left; padding-bottom: 88px; width: 100%; padding-left: 120px; padding-right: 120px;">
 <tbody><tr>
 <td style="padding-top: 40px;">
-<img src="http://kvdmr.nl/svgs/coolblue.svg" style="width: 100px;">
+<img src="https://file.coffee/u/bduFj_UlWV.png" style="width: 100px;">
 </td>
 </tr>
 <tr>
