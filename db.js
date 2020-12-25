@@ -3,7 +3,7 @@ const pgp = require('pg-promise')(/* initialization options */)
 
 // Onderstaande data later ergens opslaan -> Veiligheid
 const cn = {
-    host: '192.168.0.108',
+    host: 'iprwc.kvdmr.nl',
     port: 5432,
     database: 'iprwc',
     user: 'iprwc',
