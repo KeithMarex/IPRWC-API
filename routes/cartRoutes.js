@@ -8,4 +8,7 @@ router.get('/create', cartController.createCart);
 // POST /cart/getProducts
 router.post('/getProducts', cartController.getProducts);
 
+// POST /cart/addProduct
+router.post('/addProduct', cartController.addProductToCart);
+
 module.exports = router;
