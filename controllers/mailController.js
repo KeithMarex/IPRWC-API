@@ -14,6 +14,7 @@ transporter.verify(function (error, succes){
         console.log(error);
     } else {
         console.log('[Mail Conrtoller] Server is read to take our messages.');
+        console.log('\x1b[36m%s\x1b[0m', '[SUCCES] API has succesfully booted.');
     }
 });
 

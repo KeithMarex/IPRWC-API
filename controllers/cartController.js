@@ -32,7 +32,7 @@ exports.createCart = (req, res, next) => {
 
 exports.getProducts = (req, res) => {
     const { cartid } = req.body;
-    db.query('SELECT product.* , count(*) FROM "user" JOIN cart_product cp on "user".cart_id = cp.cart_id JOIN product on cp.product_id=product.product_id WHERE "user".cart_id=${cartid} GROUP BY cp.product_id, product.product_id', {
+    db.query('SELECT product.* , count(*) FROM "user" JOIN ${table:name} cp on "user".cart_id = cp.cart_id JOIN product on cp.product_id=product.product_id WHERE "user".cart_id=${cartid} GROUP BY cp.product_id, product.product_id', {
         table: KOPPELTABEL,
         cartid: cartid
     })
