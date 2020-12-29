@@ -32,7 +32,7 @@ exports.createCart = (req, res, next) => {
 
 exports.getProducts = (req, res) => {
     const { cartid } = req.body;
-    db.query('SELECT product.* , count(*) FROM "user" JOIN ${table:name} cp on "user".cart_id = cp.cart_id JOIN product on cp.product_id=product.product_id WHERE "user".cart_id=${cartid} GROUP BY cp.product_id, product.product_id', {
+    db.query('SELECT product.*, cp.count FROM "user" JOIN ${table:name} cp on "user".cart_id = cp.cart_id JOIN product on cp.product_id=product.product_id WHERE "user".cart_id=${cartid} GROUP BY cp.product_id, product.product_id, cp.count', {
         table: KOPPELTABEL,
         cartid: cartid
     })
@@ -51,11 +51,32 @@ exports.getProducts = (req, res) => {
 exports.addProductToCart = (req, res) => {
     const { cartid, productid } = req.body;
 
-    db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${cartid}, ${productid})', {
+    db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${cartid}, ${productid}, ${count})', {
         table: KOPPELTABEL,
-        columns: ['cart_id', 'product_id'],
+        columns: ['cart_id', 'product_id', 'count'],
         cartid: cartid,
-        productid: productid
+        productid: productid,
+        count: 1
+    })
+    .then(result => {
+        res.status(200).json({
+            result: result
+        })
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+}
+
+exports.increaseAmount = (req, res) => {
+    const { cartid, productid } = req.body;
+
+    db.query('UPDATE ${table:name} SET count=count+1 WHERE cart_id=${cartId} AND product_id=${productId}', {
+        table: KOPPELTABEL,
+        cartId: cartid,
+        productId: productid,
     })
     .then(result => {
         res.status(200).json({

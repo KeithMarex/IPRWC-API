@@ -11,4 +11,7 @@ router.post('/getProducts', cartController.getProducts);
 // POST /cart/addProduct
 router.post('/addProduct', cartController.addProductToCart);
 
+// POST /cart/increaseAmount
+router.post('/increaseAmount', cartController.increaseAmount);
+
 module.exports = router;
