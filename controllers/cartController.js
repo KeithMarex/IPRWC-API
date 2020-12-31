@@ -70,13 +70,34 @@ exports.addProductToCart = (req, res) => {
     });
 }
 
-exports.increaseAmount = (req, res) => {
-    const { cartid, productid } = req.body;
+exports.changeValue = (req, res) => {
+    const { cartid, productid, value } = req.body;
 
-    db.query('UPDATE ${table:name} SET count=count+1 WHERE cart_id=${cartId} AND product_id=${productId}', {
+    db.query('UPDATE ${table:name} SET count=${value} WHERE cart_id=${cartId} AND product_id=${productId}', {
         table: KOPPELTABEL,
         cartId: cartid,
         productId: productid,
+        value: value
+    })
+    .then(result => {
+        res.status(200).json({
+            result: result
+        })
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+}
+
+exports.deleteProduct = (req, res) => {
+    const { cartid, productid } = req.body;
+
+    db.query('DELETE FROM ${table:name} WHERE cart_id=${cartId} and product_id=${productId}', {
+        table: KOPPELTABEL,
+        cartId: cartid,
+        productId: productid
     })
     .then(result => {
         res.status(200).json({
