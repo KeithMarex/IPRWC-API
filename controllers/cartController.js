@@ -110,3 +110,23 @@ exports.deleteProduct = (req, res) => {
         });
     });
 }
+
+exports.iABO = (req, res) => {
+    const { cartid, productid } = req.body;
+
+    db.query('UPDATE ${table:name} SET count = count + 1 WHERE cart_id=${cartId} AND product_id=${productId}', {
+        table: KOPPELTABEL,
+        cartId: cartid,
+        productId: productid
+    })
+    .then(result => {
+        res.status(200).json({
+            result: result
+        })
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+}

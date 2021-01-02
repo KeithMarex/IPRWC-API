@@ -17,4 +17,7 @@ router.post('/changeValue', cartController.changeValue);
 // POST /cart/deleteProduct
 router.post('/deleteProduct', cartController.deleteProduct);
 
+// POST /cart/increaseAmountByOne
+router.post('/increaseAmountByOne', cartController.iABO);
+
 module.exports = router;
