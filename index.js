@@ -1,10 +1,18 @@
 // Make use of libraries
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const nodemailer = require("nodemailer");
-const port = 3000;
+const HTTPport = 3000;
+const HTTPSport = 3001;
+
+var privateKey  = fs.readFileSync('sslcert/key.pem', 'utf8');
+var certificate = fs.readFileSync('sslcert/cert.pem', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 
 // Include all Path/ Route names
 const userRoutes = require('./routes/userRoutes');
@@ -43,7 +51,10 @@ app.use((error, req, res, next) => {
 /**
  * Write the port number in the console window
  */
-app.listen(port, () => {
-    console.log(`[API Controller] App running on port ${port}.`);
-});
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
 
+httpServer.listen(HTTPport, () => {
+    console.log(`[API Controller] App running on HTTP port ${HTTPport}.`)});
+httpsServer.listen(HTTPSport, () => {
+    console.log(`[API Controller] App running on HTTPS port ${HTTPSport}.`)});
