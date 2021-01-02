@@ -7,6 +7,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const nodemailer = require("nodemailer");
+const HTTPport = 8080;
 const HTTPSport = 8443;
 
 var privateKey  = fs.readFileSync('sslcert/key.pem', 'utf8');
@@ -55,6 +56,9 @@ app.use((error, req, res, next) => {
  */
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(HTTPport, () => {
+    console.log(`[API Controller] App running on HTTP port ${HTTPport}.`)});
 
 httpsServer.listen(HTTPSport, () => {
     console.log(`[API Controller] App running on HTTPS port ${HTTPSport}.`)});
