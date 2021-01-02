@@ -45,6 +45,9 @@ app.use((error, req, res, next) => {
     const message = error.message;
     const data = error.data;
     res.status(status).json({message: message, data: data});
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 });
 
 /**
