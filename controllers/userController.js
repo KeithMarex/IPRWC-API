@@ -216,7 +216,7 @@ exports.changePassword = (req, res, next) => {
     });
 };
 
-exports.resetPassword = (req, res) => {
+exports.resetPassword =  async (req, res) => {
     const {email} = req.body;
 
     if (typeof email === 'undefined') {
