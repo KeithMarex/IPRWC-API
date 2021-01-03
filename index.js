@@ -10,14 +10,9 @@ const nodemailer = require("nodemailer");
 const HTTPport = 80;
 const HTTPSport = 443;
 
-const {key, cert} = await (async () => {
-	const certdir = (await fs.readdir("/etc/letsencrypt/live"))[0];
-
-	return {
-		key: await fs.readFile(`/etc/letsencrypt/live/${certdir}/privkey.pem`),
-		cert: await fs.readFile(`/etc/letsencrypt/live/${certdir}/fullchain.pem`)
-	}
-})();
+var privateKey  = fs.readFileSync('/etc/letsencrypt/live/iprwc.kvdmr.nl/privkey.pem');
+var certificate = fs.readFileSync('/etc/letsencrypt/live/iprwc.kvdmr.nl/fullchain.pem');
+var credentials = {key: privateKey, cert: certificate};
 
 // Include all Path/ Route names
 const userRoutes = require('./routes/userRoutes');
@@ -60,7 +55,7 @@ app.use((error, req, res, next) => {
  * Write the port number in the console window
  */
 var httpServer = http.createServer(app);
-var httpsServer = https.createServer({key, cert}, app);
+var httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(HTTPport, () => {
     console.log(`[API Controller] App running on HTTP port ${HTTPport}.`)});
