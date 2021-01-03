@@ -165,7 +165,7 @@ exports.checkUserLogin = (req, res, next) => {
         userpassword: wachtwoord
     })
     .then(result => {
-        bcrypt.compare(password, result.wachtwoord, function (err, login_result) {
+        bcrypt.compare(wachtwoord, result.wachtwoord, function (err, login_result) {
             if (login_result) {
                 const token = jwt.sign({user_id: result.id}, secretJwtKey, {expiresIn: '7d'});
 
@@ -196,9 +196,11 @@ exports.checkUserLogin = (req, res, next) => {
  * 
  * @return {result} res - Always return an object with a message and status code
  */
-exports.changePassword = (req, res, next) => {
+exports.changePassword = async (req, res, next) => {
 
-    const { email } = req.body;
+    const { email, oudWachtwoord, NieuwWachtwoord } = req.body;
+
+    const password_hash = await hashPassword(NieuwWachtwoord);
     
     db.query('UPDATE ${table:name} SET wachtwoord = ${userPassword} WHERE email = ${userEmail}', {
         table: TABLE,
