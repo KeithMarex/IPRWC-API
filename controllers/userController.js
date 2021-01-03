@@ -160,6 +160,7 @@ exports.checkUserLogin = async (req, res, next) => {
     const {email, wachtwoord} = req.body;
 
     const password_hash = await hashPassword(wachtwoord);
+    console.log(password_hash);
 
     db.query("SELECT * FROM ${table:name} WHERE email=${useremail} AND wachtwoord=${userpassword}", {
         table: TABLE,
