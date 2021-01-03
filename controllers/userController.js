@@ -4,9 +4,19 @@ const _ = require('lodash');
 const { v4:uuidv4 } = require('uuid');
 const cartController = require("./cartController.js");
 const mailSender = require('../controllers/mailController');
+const bcrypt = require('bcrypt');
 
 // Database table name
 const TABLE = 'user';
+
+async function hashPassword(password) {
+    return await new Promise((resolve, reject) => {
+        bcrypt.hash(password, 7, function (err, hash) {
+            if (err) reject(err)
+            resolve(hash)
+        });
+    })
+}
 
 /**
  * Select all users
@@ -155,17 +165,20 @@ exports.checkUserLogin = (req, res, next) => {
         userpassword: wachtwoord
     })
     .then(result => {
-        if (!_.isEmpty(result)) {
-            res.status(200).json({
-                'login': true,
-                result: result
-            });
-        } else {
-            res.status(200).json({
-                'login': false,
-                result: result
-            });
-        }
+        bcrypt.compare(password, result.wachtwoord, function (err, login_result) {
+            if (login_result) {
+                const token = jwt.sign({user_id: result.id}, secretJwtKey, {expiresIn: '7d'});
+
+                delete result.password_hash;
+                res.status(200).json({
+                    login: login_result ? 'success' : 'failed',
+                    token: token,
+                    result: result
+                });
+            } else {
+                return res.status(200).json({login: 'failed', error: true});
+            }
+        });
     })
     .catch(error => {
         res.status(404).json({
@@ -219,12 +232,14 @@ exports.resetPassword = (req, res) => {
     // TODO send password via email to user
     mailSender.sendResetMail(email, password);
 
+    const password_hash = await hashPassword(password);
+
     // const password_hash = await hashPassword(password);
 
     db.query('UPDATE ${table:name} SET wachtwoord = ${userPassword} WHERE email = ${userEmail}', {
         table: TABLE,
         userEmail: email,
-        userPassword: password
+        userPassword: password_hash
     }).then(result => {
         res.status(200).json({
             reset: true,
