@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt');
 // Database table name
 const TABLE = 'user';
 
-async function hashPassword(password) {
+hashPassword = async (password) => {
     return await new Promise((resolve, reject) => {
         bcrypt.hash(password, 7, function (err, hash) {
             if (err) reject(err)
@@ -166,6 +166,7 @@ exports.checkUserLogin = (req, res, next) => {
     })
     .then(result => {
         bcrypt.compare(wachtwoord, result.wachtwoord, function (err, login_result) {
+            console.log('Compared result', wachtwoord, result.wachtwoord, login_result); 
             if (login_result) {
                 const token = jwt.sign({user_id: result.id}, secretJwtKey, {expiresIn: '7d'});
 
