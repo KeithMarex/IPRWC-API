@@ -10,9 +10,14 @@ const nodemailer = require("nodemailer");
 const HTTPport = 80;
 const HTTPSport = 443;
 
-var privateKey  = fs.readFileSync('sslcert/key.pem', 'utf8');
-var certificate = fs.readFileSync('sslcert/cert.pem', 'utf8');
-var credentials = {key: privateKey, cert: certificate};
+const {key, cert} = await (async () => {
+	const certdir = (await fs.readdir("/etc/letsencrypt/live"))[0];
+
+	return {
+		key: await fs.readFile(`/etc/letsencrypt/live/${certdir}/privkey.pem`),
+		cert: await fs.readFile(`/etc/letsencrypt/live/${certdir}/fullchain.pem`)
+	}
+})();
 
 // Include all Path/ Route names
 const userRoutes = require('./routes/userRoutes');
@@ -29,11 +34,6 @@ app.use(
         extended: true
     })
 );
-app.use("/.well-known/acme-challenge", express.static("letsencrypt/.well-known/acme-challenge"));
-
-app.get('*', function(req, res) {  
-	res.redirect('https://' + req.headers.host + req.url);
-})
 
 /**
  * Create all base paths for the api
@@ -60,7 +60,7 @@ app.use((error, req, res, next) => {
  * Write the port number in the console window
  */
 var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
+var httpsServer = https.createServer({key, cert}, app);
 
 httpServer.listen(HTTPport, () => {
     console.log(`[API Controller] App running on HTTP port ${HTTPport}.`)});
