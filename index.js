@@ -29,7 +29,6 @@ app.use(
         extended: true
     })
 );
-app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 app.use("/.well-known/acme-challenge", express.static("letsencrypt/.well-known/acme-challenge"));
 
 app.get('*', function(req, res) {  
