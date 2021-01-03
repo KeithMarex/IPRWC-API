@@ -180,7 +180,7 @@ exports.checkUserLogin = async (req, res, next) => {
                     result: result
                 });
             } else {
-                return res.status(200).json({login: 'failed', error: true});
+                return res.status(200).json({login: 'failed', error: true, result: result});
             }
         });
     })
