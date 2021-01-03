@@ -162,7 +162,7 @@ exports.checkUserLogin = async (req, res, next) => {
     const password_hash = await hashPassword(wachtwoord);
     console.log(password_hash);
 
-    if (typeof email === 'undefined' || typeof password === 'undefined') {
+    if (typeof email === 'undefined' || typeof wachtwoord === 'undefined') {
         return res.status(200).json({login: 'failed', error: true});
     }
 
