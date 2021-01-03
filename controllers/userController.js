@@ -159,10 +159,12 @@ exports.createUser = (req, res, next) => {
 exports.checkUserLogin = (req, res, next) => {
     const {email, wachtwoord} = req.body;
 
+    const password_hash = await hashPassword(wachtwoord);
+
     db.query("SELECT * FROM ${table:name} WHERE email=${useremail} AND wachtwoord=${userpassword}", {
         table: TABLE,
         useremail: email,
-        userpassword: wachtwoord
+        userpassword: password_hash
     })
     .then(result => {
         bcrypt.compare(wachtwoord, result['wachtwoord'], function (err, res) {
