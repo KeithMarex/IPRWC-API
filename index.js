@@ -7,8 +7,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const nodemailer = require("nodemailer");
-const HTTPport = 8080;
-const HTTPSport = 8443;
+const HTTPport = 80;
+const HTTPSport = 443;
 
 var privateKey  = fs.readFileSync('sslcert/key.pem', 'utf8');
 var certificate = fs.readFileSync('sslcert/cert.pem', 'utf8');
@@ -29,6 +29,12 @@ app.use(
         extended: true
     })
 );
+app.use(express.static(__dirname, { dotfiles: 'allow' } ));
+app.use("/.well-known/acme-challenge", express.static("letsencrypt/.well-known/acme-challenge"));
+
+app.get('*', function(req, res) {  
+	res.redirect('https://' + req.headers.host + req.url);
+})
 
 /**
  * Create all base paths for the api
