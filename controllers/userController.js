@@ -168,9 +168,10 @@ exports.checkUserLogin = async (req, res, next) => {
         useremail: email
     })
     .then(result => {
-        bcrypt.compare(wachtwoord, result.wachtwoord, function (err, res) {
-            console.log(err);
-            console.log(result);
+        bcrypt.compare(wachtwoord, result.wachtwoord, (err, res) => {
+            console.log(wachtwoord);
+            console.log(result.wachtwoord);
+            await console.log(result.wachtwoord);
             console.log('Compared result', wachtwoord, result, res, err); 
             if (res) {
                 delete result.wachtwoord;
