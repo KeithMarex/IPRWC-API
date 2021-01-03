@@ -159,9 +159,6 @@ exports.createUser = (req, res, next) => {
 exports.checkUserLogin = async (req, res, next) => {
     const {email, wachtwoord} = req.body;
 
-    const password_hash = await hashPassword(wachtwoord);
-    console.log(password_hash);
-
     if (typeof email === 'undefined' || typeof wachtwoord === 'undefined') {
         return res.status(200).json({login: 'failed', error: true});
     }
@@ -174,7 +171,7 @@ exports.checkUserLogin = async (req, res, next) => {
         bcrypt.compare(wachtwoord, result.wachtwoord, function (err, res) {
             console.log(err);
             console.log(result);
-            console.log('Compared result', wachtwoord, result['wachtwoord'], res, err); 
+            console.log('Compared result', wachtwoord, result, res, err); 
             if (res) {
                 delete result.wachtwoord;
                 res.status(200).json({
