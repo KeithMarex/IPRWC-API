@@ -167,7 +167,7 @@ exports.checkUserLogin = (req, res, next) => {
     .then(result => {
         bcrypt.compare(wachtwoord, result['wachtwoord'], function (err, res) {
             console.log('Compared result', wachtwoord, result['wachtwoord'], res, err); 
-            if (login_result) {
+            if (res) {
                 const token = jwt.sign({user_id: result.id}, secretJwtKey, {expiresIn: '7d'});
 
                 delete result.password_hash;
