@@ -168,21 +168,25 @@ exports.checkUserLogin = async (req, res, next) => {
         useremail: email
     })
     .then(result => {
-        bcrypt.compare(wachtwoord, result.wachtwoord, async (err, res) => {
-            console.log(wachtwoord);
-            console.log(result.wachtwoord);
-            await console.log(result.wachtwoord);
-            console.log('Compared result', wachtwoord, result, res, err); 
-            if (res) {
-                delete result.wachtwoord;
-                res.status(200).json({
-                    login: true,
-                    result: result
-                });
-            } else {
-                return res.status(200).json({login: 'failed', error: true, result: result});
-            }
+        res.status(200).json({
+            reset: true,
+            result: result
         });
+        // bcrypt.compare(wachtwoord, result.wachtwoord, async (err, res) => {
+        //     console.log(wachtwoord);
+        //     console.log(result.wachtwoord);
+        //     await console.log(result.wachtwoord);
+        //     console.log('Compared result', wachtwoord, result, res, err); 
+        //     if (res) {
+        //         delete result.wachtwoord;
+        //         res.status(200).json({
+        //             login: true,
+        //             result: result
+        //         });
+        //     } else {
+        //         return res.status(200).json({login: 'failed', error: true, result: result});
+        //     }
+        // });
     })
     .catch(error => {
         res.status(404).json({
