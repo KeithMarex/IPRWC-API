@@ -162,22 +162,22 @@ exports.checkUserLogin = async (req, res, next) => {
     const password_hash = await hashPassword(wachtwoord);
     console.log(password_hash);
 
-    db.query("SELECT * FROM ${table:name} WHERE email=${useremail} AND wachtwoord=${userpassword}", {
+    if (typeof email === 'undefined' || typeof password === 'undefined') {
+        return res.status(200).json({login: 'failed', error: true});
+    }
+
+    db.query("SELECT * FROM ${table:name} WHERE email=${useremail}", {
         table: TABLE,
-        useremail: email,
-        userpassword: password_hash
+        useremail: email
     })
     .then(result => {
         bcrypt.compare(wachtwoord, result['wachtwoord'], function (err, res) {
             console.log(result);
             console.log('Compared result', wachtwoord, result['wachtwoord'], res, err); 
             if (res) {
-                const token = jwt.sign({user_id: result.id}, secretJwtKey, {expiresIn: '7d'});
-
                 delete result.password_hash;
                 res.status(200).json({
-                    login: login_result ? 'success' : 'failed',
-                    token: token,
+                    login: true,
                     result: result
                 });
             } else {
