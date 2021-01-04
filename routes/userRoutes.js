@@ -17,4 +17,10 @@ router.post('/passChange', userController.changePassword);
 // POST /user/password/reset
 router.post('/passReset', userController.resetPassword);
 
+// POST /user/password/reset
+router.post('/passReset', userController.resetPassword);
+
+// POST /user/update
+router.post('/update', userController.updateUser);
+
 module.exports = router;

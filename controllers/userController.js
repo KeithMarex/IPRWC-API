@@ -5,6 +5,7 @@ const { v4:uuidv4 } = require('uuid');
 const cartController = require("./cartController.js");
 const mailSender = require('../controllers/mailController');
 const bcrypt = require('bcrypt');
+const { post } = require('../routes/userRoutes');
 
 // Database table name
 const TABLE = 'user';
@@ -272,3 +273,26 @@ exports.resetPassword =  async (req, res) => {
         });
     });
 };
+
+exports.updateUser = (req, res) => {
+
+    const {postData, cart_id} = req.body;
+
+
+    db.query('UPDATE ${table:name} SET ${columns:name}=${values:name} WHERE cart_id=${cart_id}', {
+        table: TABLE,
+        columns: ['voornaam', 'achternaam', 'straatnaam', 'huisnummer', 'plaatsnaam', 'email'],
+        values: [postData['inputVoornaam'], postData['inputAchternaam'], postData['inputStraat'], postData['inputHuisnummer'], postData['inputPlaats'], postData['inputEmail']],
+        cart_id: cart_id
+    }).then(result => {
+        res.status(200).json({
+            succes: true,
+            result: result
+        });
+    }).catch(error => {
+        res.status(404).json({
+            succes: false,
+            error: error.message || error
+        });
+    });
+}
