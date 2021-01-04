@@ -45,7 +45,7 @@ exports.getAllUsers = (req, res, next) => {
     });
 };
 
-exports.createUser = (req, res, next) => {
+exports.createUser = async (req, res, next) => {
 
     const { voornaam, achternaam, email, wachtwoord, straatnaam, huisnummer, plaatsnaam } = req.body;
     const user_id = uuidv4();
