@@ -169,6 +169,7 @@ exports.checkUserLogin = (req, res, next) => {
     })
     .then(result => {
         result = result[0];
+        console.log(result);
         bcrypt.compare(wachtwoord, result.wachtwoord, (err, login_result) => {
             if (login_result) {
                 res.status(200).json({
@@ -176,7 +177,7 @@ exports.checkUserLogin = (req, res, next) => {
                     result: result
                 });
             } else {
-                return res.status(200).json({login: 'failed', error: true, result: result});
+                return res.status(200).json({login: 'failed', error: true});
             }
         })
     })
