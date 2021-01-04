@@ -156,7 +156,7 @@ exports.createUser = (req, res, next) => {
  * 
  * @return {result} res - Always return an object with a message and status code
  */
-exports.checkUserLogin = (req, res, next) => {
+exports.checkUserLogin = async (req, res, next) => {
     const {email, wachtwoord} = req.body;
 
     if (typeof email === 'undefined' || typeof wachtwoord === 'undefined') {
