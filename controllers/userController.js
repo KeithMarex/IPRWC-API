@@ -179,6 +179,7 @@ exports.checkUserLogin = (req, res, next) => {
                 return res.status(200).json({login: 'failed', error: true, result: result});
             }
         })
+    })
     .catch(error => {
         res.status(404).json({
             error: error.message || error
