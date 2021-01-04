@@ -200,9 +200,9 @@ exports.checkUserLogin = (req, res, next) => {
  */
 exports.changePassword = async (req, res, next) => {
 
-    const { email, oudWachtwoord, NieuwWachtwoord } = req.body;
+    const { email, oudWachtwoord, nieuwWachtwoord } = req.body;
 
-    const password_hash = await hashPassword(NieuwWachtwoord);
+    const password_hash = await hashPassword(nieuwWachtwoord);
 
     db.query("SELECT * FROM ${table:name} WHERE email=${useremail}", {
         table: TABLE,
@@ -226,8 +226,7 @@ exports.changePassword = async (req, res, next) => {
             });
         } else {
             res.status(200).json({
-                login: false,
-                result: result
+                passChange: false,
             });
         }
     })
