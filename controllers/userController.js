@@ -277,7 +277,8 @@ exports.resetPassword =  async (req, res) => {
 exports.updateUser = (req, res) => {
 
     const {postData, cart_id} = req.body;
-
+    console.log(postData);
+    console.log(postData.inputAchternaam);
 
     db.query('UPDATE ${table:name} SET ${columns:name}=${values:name} WHERE cart_id=${cart_id}', {
         table: TABLE,
