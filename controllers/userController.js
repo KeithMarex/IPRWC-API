@@ -168,18 +168,19 @@ exports.checkUserLogin = (req, res, next) => {
         useremail: email
     })
     .then(result => {
-        result = result[0];
-        console.log(result);
-        bcrypt.compare(wachtwoord, result.wachtwoord, (err, login_result) => {
-            if (login_result) {
-                res.status(200).json({
-                    login: true,
-                    result: result
-                });
-            } else {
-                return res.status(200).json({login: 'failed', error: true});
-            }
-        })
+        const match = await bcrypt.compare(password, user.wachtwoord);
+
+        if(match) {
+            res.status(200).json({
+                login: true,
+                result: result
+            });
+        } else {
+            res.status(200).json({
+                'suckit': true,
+                result: result
+            });
+        }
     })
     .catch(error => {
         res.status(404).json({
