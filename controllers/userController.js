@@ -282,10 +282,14 @@ exports.updateUser = (req, res) => {
     console.log(postData);
     console.log(postData.inputAchternaam);
 
-    db.query('UPDATE "user" SET ${columns:name}=${values:name} WHERE cart_id=${cart_id}', {
+    db.query('UPDATE "user" SET voornaam=${voornaam}, achternaam=${achternaam}, straatnaam=${straatnaam}, huisnummer=${huisnummer}, plaatsnaam=${plaatsnaam}, email=${email} WHERE cart_id=${cart_id}', {
         table: TABLE,
-        columns: ['voornaam', 'achternaam', 'straatnaam', 'huisnummer', 'plaatsnaam', 'email'],
-        values: [postData.inputVoornaam, postData.inputAchternaam, postData.inputStraat, Number(postData.inputHuisnummer), postData.inputPlaats, postData.inputEmail],
+        voornaam: postData.inputVoornaam,
+        achternaam: postData.inputAchternaam,
+        straatnaam: postData.inputStraat,
+        huisnummer: postData.inputHuisnummer,
+        plaatsnaam: postData.inputPlaats,
+        email: postData.inputEmail,
         cart_id: cart_id
     }).then(result => {
         res.status(200).json({
