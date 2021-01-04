@@ -203,17 +203,35 @@ exports.changePassword = async (req, res, next) => {
     const { email, oudWachtwoord, NieuwWachtwoord } = req.body;
 
     const password_hash = await hashPassword(NieuwWachtwoord);
-    
-    db.query('UPDATE ${table:name} SET wachtwoord = ${userPassword} WHERE email = ${userEmail}', {
+
+    db.query("SELECT * FROM ${table:name} WHERE email=${useremail}", {
         table: TABLE,
-        userEmail: email,
-        userPassword: Math.random().toString(36).substr(2, 8)
-    }).then(result => {
-        res.status(200).json({
-            reset: true,
-            result: result
-        });
-    }).catch(error => {
+        useremail: email
+    })
+    .then(async result => {
+        const match = await bcrypt.compare(oudWachtwoord, result[0].wachtwoord);
+        if(match) {
+            db.query('UPDATE ${table:name} SET wachtwoord = ${userPassword} WHERE email = ${userEmail}', {
+                table: TABLE,
+                userEmail: email,
+                userPassword: password_hash
+            }).then(result => {
+                res.status(200).json({
+                    passChange: true,
+                });
+            }).catch(error => {
+                res.status(404).json({
+                    error: error.message || error
+                });
+            });
+        } else {
+            res.status(200).json({
+                login: false,
+                result: result
+            });
+        }
+    })
+    .catch(error => {
         res.status(404).json({
             error: error.message || error
         });
