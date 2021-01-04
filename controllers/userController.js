@@ -173,10 +173,12 @@ exports.checkUserLogin = (req, res, next) => {
         if(match) {
             res.status(200).json({
                 login: true,
+                result: result
             });
         } else {
             res.status(200).json({
-                login: false
+                login: false,
+                result: result
             });
         }
     })
