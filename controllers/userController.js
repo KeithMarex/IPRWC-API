@@ -169,6 +169,7 @@ exports.checkUserLogin = (req, res, next) => {
     })
     .then(async result => {
         const match = await bcrypt.compare(wachtwoord, result[0].wachtwoord);
+        console.log(match);
 
         if(match) {
             res.status(200).json({
