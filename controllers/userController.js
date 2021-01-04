@@ -156,7 +156,7 @@ exports.createUser = (req, res, next) => {
  * 
  * @return {result} res - Always return an object with a message and status code
  */
-exports.checkUserLogin = async (req, res, next) => {
+exports.checkUserLogin = (req, res, next) => {
     const {email, wachtwoord} = req.body;
 
     if (typeof email === 'undefined' || typeof wachtwoord === 'undefined') {
@@ -168,26 +168,17 @@ exports.checkUserLogin = async (req, res, next) => {
         useremail: email
     })
     .then(result => {
-        res.status(200).json({
-            reset: true,
-            result: result
-        });
-        // bcrypt.compare(wachtwoord, result.wachtwoord, async (err, res) => {
-        //     console.log(wachtwoord);
-        //     console.log(result.wachtwoord);
-        //     await console.log(result.wachtwoord);
-        //     console.log('Compared result', wachtwoord, result, res, err); 
-        //     if (res) {
-        //         delete result.wachtwoord;
-        //         res.status(200).json({
-        //             login: true,
-        //             result: result
-        //         });
-        //     } else {
-        //         return res.status(200).json({login: 'failed', error: true, result: result});
-        //     }
-        // });
-    })
+        result = result[0];
+        bcrypt.compare(wachtwoord, result.wachtwoord, (err, login_result) => {
+            if (login_result) {
+                res.status(200).json({
+                    login: true,
+                    result: result
+                });
+            } else {
+                return res.status(200).json({login: 'failed', error: true, result: result});
+            }
+        })
     .catch(error => {
         res.status(404).json({
             error: error.message || error
