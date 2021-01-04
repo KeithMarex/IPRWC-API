@@ -209,6 +209,7 @@ exports.changePassword = async (req, res, next) => {
         useremail: email
     })
     .then(async result => {
+        console.log(result[0].wachtwoord);
         const match = await bcrypt.compare(oudWachtwoord, result[0].wachtwoord);
         if(match) {
             db.query('UPDATE ${table:name} SET wachtwoord = ${userPassword} WHERE email = ${userEmail}', {
