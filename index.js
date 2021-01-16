@@ -10,9 +10,9 @@ const nodemailer = require("nodemailer");
 const HTTPport = 80;
 const HTTPSport = 443;
 
-// var privateKey  = fs.readFileSync('/etc/letsencrypt/live/iprwc.kvdmr.nl/privkey.pem');
-// var certificate = fs.readFileSync('/etc/letsencrypt/live/iprwc.kvdmr.nl/fullchain.pem');
-// var credentials = {key: privateKey, cert: certificate};
+var privateKey  = fs.readFileSync('/etc/letsencrypt/live/iprwc.kvdmr.nl/privkey.pem');
+var certificate = fs.readFileSync('/etc/letsencrypt/live/iprwc.kvdmr.nl/fullchain.pem');
+var credentials = {key: privateKey, cert: certificate};
 
 // Include all Path/ Route names
 const userRoutes = require('./routes/userRoutes');
@@ -55,10 +55,10 @@ app.use((error, req, res, next) => {
  * Write the port number in the console window
  */
 var httpServer = http.createServer(app);
-// var httpsServer = https.createServer(credentials, app);
+var httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(HTTPport, () => {
     console.log(`[API Controller] App running on HTTP port ${HTTPport}.`)});
 
-// httpsServer.listen(HTTPSport, () => {
-//     console.log(`[API Controller] App running on HTTPS port ${HTTPSport}.`)});
+httpsServer.listen(HTTPSport, () => {
+    console.log(`[API Controller] App running on HTTPS port ${HTTPSport}.`)});
