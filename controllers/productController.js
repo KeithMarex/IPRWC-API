@@ -23,6 +23,24 @@ exports.getAll = (req, res, next) => {
     });
 };
 
+exports.getProduct = (req, res, next) => {
+    const {id} = req.params;
+
+    db.query('SELECT * FROM ${table:name} WHERE product_id=${id}', {
+        table: TABLE,
+        id: id,
+    }).then(result => {
+        res.status(200).json({
+            result: result,
+        });
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+}
+
 exports.createProduct = (req, res, next) => {
     const { titel, beschrijving, prijs, voorraad, foto_path } = req.body;
     const product_id = uuidv4();
