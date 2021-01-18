@@ -18,6 +18,7 @@ var credentials = {key: privateKey, cert: certificate};
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 /**
  * Use body parser for all handlers
@@ -36,6 +37,7 @@ app.use(
 app.use('/user', userRoutes);
 app.use('/product', productRoutes);
 app.use('/cart', cartRoutes);
+app.use('/order', orderRoutes);
 
 /**
  * Log all base information for the api
