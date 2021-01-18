@@ -5,11 +5,7 @@ const orderController = require('../controllers/orderController')
 // POST /order/create
 router.post('/create', orderController.create);
 
-// GET /order/getAllOrders/:orderId
-router.get('/getProducts/:orderId', orderController.getProductsByOrderID);
-
-// GET /order/getAllOrders/:orderId
-router.get('/getOrderIds/:userId', orderController.getOrderIds);
-
+// GET /order/get/:orderId
+router.get('/get/:userId', orderController.get);
 
 module.exports = router;

@@ -8,30 +8,12 @@ const { use } = require('../routes/userRoutes');
 const TABLE = 'orders';
 const KOPPELTABEL = 'order_product'
 
-exports.getProductsByOrderID = (req, res) => {
-    const {orderId} = req.params;
-
-    db.query('SELECT product_id FROM ${table:name} WHERE order_id=${id}', {
-        table: KOPPELTABEL,
-        id: order_id,
-    }).then(result => {
-        res.status(200).json({
-            result: result,
-        });
-    })
-    .catch(error => {
-        res.status(404).json({
-            error: error.message || error
-        });
-    });
-}
-
-exports.getOrderIds = (req, res) => {
+exports.get = (req, res) => {
     const {userId} = req.params;
 
-    db.query('SELECT order_id FROM ${table:name} WHERE user_id=${id}', {
-        table: TABLE,
-        id: userId,
+    db.query('SELECT orders.order_id, JSON_agg(p.*) FROM orders JOIN order_product op on orders.order_id = op.order_id JOIN product p on op.product_id = p.product_id WHERE user_id = ${userId} GROUP BY orders.order_id;', {
+        table: KOPPELTABEL,
+        userId: userId,
     }).then(result => {
         res.status(200).json({
             result: result,
