@@ -68,3 +68,24 @@ exports.createProduct = (req, res, next) => {
         });
     });
 };
+
+exports.delete = (req, res, next) => {
+    const { product_id } = req.body;
+
+    db.query('DELETE FROM ${table:name} WHERE product_id = ${product_id})', {
+        table: TABLE,
+        product_id: product_id
+    })
+    .then(result => {
+        if(_.isEmpty(result)) {
+            res.status(200).json({
+                delete: true
+            });
+        }
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+};

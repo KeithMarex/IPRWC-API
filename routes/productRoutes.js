@@ -11,4 +11,7 @@ router.get('/get/all', productController.getAll);
 // POST /product/create
 router.post('/create', productController.createProduct);
 
+// POST /product/delete
+router.post('/delete', productController.delete);
+
 module.exports = router;
