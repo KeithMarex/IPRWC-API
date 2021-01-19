@@ -11,7 +11,7 @@ const KOPPELTABEL = 'order_product'
 exports.get = (req, res) => {
     const {userId} = req.params;
 
-    db.query('SELECT orders.order_id, JSON_agg((p.*, op.count)::product_json) FROM orders JOIN order_product op on orders.order_id = op.order_id JOIN product p on op.product_id = p.product_id WHERE user_id = ${userId} GROUP BY orders.order_id;', {
+    db.query('SELECT orders.order_id, orders.timestamp, orders.tracking_status, JSON_agg((p.*, op.count)::product_json) FROM orders JOIN order_product op on orders.order_id = op.order_id JOIN product p on op.product_id = p.product_id WHERE user_id = ${userId} GROUP BY orders.order_id;', {
         table: KOPPELTABEL,
         userId: userId,
     }).then(result => {
