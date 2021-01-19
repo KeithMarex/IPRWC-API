@@ -72,7 +72,7 @@ exports.createProduct = (req, res, next) => {
 exports.delete = (req, res, next) => {
     const { product_id } = req.body;
 
-    db.query('DELETE FROM ${table:name} WHERE product_id = ${product_id})', {
+    db.query('DELETE FROM ${table:name} WHERE product_id = ${product_id};', {
         table: TABLE,
         product_id: product_id
     })
