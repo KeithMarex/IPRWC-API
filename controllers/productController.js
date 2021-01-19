@@ -58,7 +58,7 @@ exports.createProduct = (req, res, next) => {
     .then(result => {
         if(_.isEmpty(result)) {
             res.status(200).json({
-                result: 'Product has been created'
+                create: true
             });
         }
     })
