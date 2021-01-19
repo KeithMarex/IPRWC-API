@@ -42,7 +42,7 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.createProduct = (req, res, next) => {
-    const { titel, beschrijving, prijs, voorraad, foto_path } = req.body;
+    const { titel, beschrijving, prijs, voorraad, product_foto_path } = req.body;
     const product_id = uuidv4();
 
     db.query('INSERT INTO ${table:name} (${columns:name}) VALUES (${product_id}, ${prijs}, ${beschrijving}, ${voorraad}, ${product_foto_path}, ${titel})', {
