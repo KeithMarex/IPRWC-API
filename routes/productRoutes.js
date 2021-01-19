@@ -8,7 +8,7 @@ router.get('/getProduct/:id', productController.getProduct);
 // GET /product/get/all
 router.get('/get/all', productController.getAll);
 
-// POST /product/add
+// POST /product/create
 router.post('/create', productController.createProduct);
 
 module.exports = router;
