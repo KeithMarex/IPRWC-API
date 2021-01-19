@@ -27,21 +27,40 @@ exports.get = (req, res) => {
 }
 
 exports.create = (req, res) => {
-    const {user_id, total_price} = req.body;
+    const {user_id} = req.body;
     const order_id = uuidv4();
 
-    db.query('INSERT INTO ${table:name}(order_id, user_id, timestamp, total_price, tracking_status) VALUES (${order_id}, ${user_id}, now(), ${total_price}, ${tracking_status})', {
+    db.query('INSERT INTO ${table:name}(order_id, user_id, timestamp, tracking_status) VALUES (${order_id}, ${user_id}, now(), ${tracking_status})', {
         table: TABLE,
         user_id: user_id,
-        total_price: total_price,
         order_id: order_id,
-        tracking_status: 'Order received'
+        tracking_status: 'Bestelling ontvangen'
     }).then(result => {
         res.status(200).json({
-            result: result,
+            insert: true,
+            order_id: order_id
         });
     })
     .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+}
+
+exports.add = (req, res) => {
+    const {order_id, product_id, count} = req.body;
+
+    db.query('INSERT INTO ${table:name}(order_id, product_id, count) VALUES (${order_id}, ${product_id}, ${count})', {
+        table: KOPPELTABEL,
+        order_id: order_id,
+        product_id: product_id,
+        count: count
+    }).then(result => {
+        res.status(200).json({
+            insert: true
+        })
+    }).catch(error => {
         res.status(404).json({
             error: error.message || error
         });
