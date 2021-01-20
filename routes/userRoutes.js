@@ -23,4 +23,7 @@ router.post('/passReset', userController.resetPassword);
 // POST /user/update
 router.post('/update', userController.updateUser);
 
+// POST /user/delete
+router.post('/delete', userController.delete);
+
 module.exports = router;

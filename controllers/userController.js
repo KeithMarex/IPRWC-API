@@ -300,3 +300,20 @@ exports.updateUser = (req, res) => {
         });
     });
 }
+
+exports.delete = (req, res) => {
+    const {user_id} = req.body;
+
+    db.query('DELETE FROM ${table:name} WHERE user_id=${user_id}', {
+        table: TABLE,
+        user_id: user_id
+    }).then(result => {
+        res.status(200).json({
+            succes: true,
+        });
+    }).catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+}
