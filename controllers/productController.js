@@ -89,3 +89,29 @@ exports.delete = (req, res, next) => {
         });
     });
 };
+
+exports.update = (req, res, next) => {
+    const { product_id, beschrijving, prijs, voorraad, product_foto_path, titel } = req.body;
+
+    db.query('UPDATE ${table:name} SET product_id=${product_id}, prijs=${prijs}, beschrijving=${beschrijving}, voorraad=${voorraad}, product_foto_path=${product_foto_path}, titel=${titel} WHERE product_id = ${product_id};', {
+        table: TABLE,
+        product_id: product_id,
+        beschrijving: beschrijving,
+        prijs: prijs,
+        voorraad: voorraad,
+        product_foto_path: product_foto_path,
+        titel: titel
+    })
+    .then(result => {
+        if(_.isEmpty(result)) {
+            res.status(200).json({
+                update: true
+            });
+        }
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+};
