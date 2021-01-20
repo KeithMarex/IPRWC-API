@@ -26,6 +26,24 @@ exports.get = (req, res) => {
     });
 }
 
+exports.getById = (req, res) => {
+    const {id} = req.params;
+
+    db.query('SELECT orders.order_id, orders.timestamp, orders.tracking_status, JSON_agg((p.*, op.count)::product_json) FROM orders JOIN order_product op on orders.order_id = op.order_id JOIN product p on op.product_id = p.product_id WHERE orders.order_id = ${id} GROUP BY orders.order_id;', {
+        table: KOPPELTABEL,
+        id: id,
+    }).then(result => {
+        res.status(200).json({
+            result: result,
+        });
+    })
+    .catch(error => {
+        res.status(404).json({
+            error: error.message || error
+        });
+    });
+}
+
 exports.create = (req, res) => {
     const {user_id} = req.body;
     const order_id = uuidv4();
