@@ -11,7 +11,7 @@ router.post('/add', orderController.add);
 // GET /order/get/:orderId
 router.get('/get/:userId', orderController.get);
 
-// GET /order/getById/:factuurnummer
-router.get('/getById/:factuurnummer', orderController.getById);
+// GET /order/getById/:id
+router.get('/getById/:id', orderController.getById);
 
 module.exports = router;
