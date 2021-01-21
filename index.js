@@ -16,6 +16,7 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const { use } = require('./routes/userRoutes');
 
 
 /**
@@ -35,6 +36,12 @@ var corsOptions = {
 }
 
 app.use(cors(corsOptions));
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'https://iprwcshop.kvdmr.nl');
+    res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+})
 app.use(bodyParser.json());
 app.use(
     bodyParser.urlencoded({
