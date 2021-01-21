@@ -1,9 +1,7 @@
 // Make use of libraries
 const fs = require('fs');
-const http = require('http');
 const https = require('https');
 const express = require('express');
-const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const nodemailer = require("nodemailer");
@@ -23,9 +21,6 @@ const orderRoutes = require('./routes/orderRoutes');
 /**
  * Use body parser for all handlers
  */
-app.use(cors({
-    origin: 'https://iprwcshop.kvdmr.nl'
-  }));
 app.use(bodyParser.json());
 app.use(
     bodyParser.urlencoded({
@@ -50,6 +45,8 @@ app.use((error, req, res, next) => {
     const message = error.message;
     const data = error.data;
     res.status(status).json({message: message, data: data});
+    res.header("Access-Control-Allow-Origin", "https://iprwcshop.kvdmr.nl");
+    res.header("Access-Control-Allow-Origin", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 
