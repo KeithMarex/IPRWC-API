@@ -1,11 +1,12 @@
 const nodemailer = require("nodemailer");
+require('dotenv').config({path: '../.env'})
 
 const transporter = nodemailer.createTransport({
-    host: 'mail.nfoservers.com',
-    port: 587,
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
     auth: {
-        user: 'iprwc@kvdmr.nl',
-        pass: '366Rt3wzjb8S',
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
     }
 })
 

@@ -1,13 +1,14 @@
 const pgp = require('pg-promise')(/* initialization options */)
+require('dotenv').config();
 
 
 // Onderstaande data later ergens opslaan -> Veiligheid
 const cn = {
-    host: 'iprwc.kvdmr.nl',
-    port: 5432,
-    database: 'iprwc',
-    user: 'iprwc',
-    password: 'Adidasmerken1'
+    host: process.env.HOST,
+    port: process.env.PORT,
+    database: process.env.DATABASE,
+    user: process.env.USER,
+    password: process.env.PASSWORD
 };
 
 const db = pgp(cn); // database instance;
