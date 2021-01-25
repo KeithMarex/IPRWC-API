@@ -1,3 +1,3 @@
 # IPRWC API
 
-Hierbij de private repo op github
+Hierbij de niet private repo op github
